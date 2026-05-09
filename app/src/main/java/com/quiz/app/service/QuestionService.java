@@ -1,5 +1,6 @@
 package com.quiz.app.service;
 
+import com.quiz.app.exception.InvalidCategoryException;
 import com.quiz.app.exception.QuestionNotFoundException;
 import com.quiz.app.model.Question;
 import com.quiz.app.repository.QuestionRepo;
@@ -22,6 +23,9 @@ public class QuestionService {
     public List<Question> getQuestionsByCategory(String category) {
         List<Question> questions = questionRepo.findByCategory(category);
 
+        if(category == null || category.isBlank()){
+            throw new InvalidCategoryException("Category cannot be empty");
+        }
         if(questions.isEmpty()){
             throw new QuestionNotFoundException(
                     "No Questions found for category: " + category
